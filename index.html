@@ -3,417 +3,933 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>UHMC Business Department - Ka Lama Kiosk</title>
+  <title>UHMC Business Department — Ka Lama Interactive Kiosk</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Google Fonts for modern typography -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
-  <div id="kiosk-app">
-    <!-- TOP HEADER / STATUS BAR -->
-    <header class="kiosk-header">
-      <div class="header-left">
-        <div class="uh-badge">UHMC</div>
-        <div class="header-title">
-          <h1>Business Department</h1>
-          <span class="sub-title">Ka Lama Building Interactive Kiosk</span>
-        </div>
-      </div>
-      <div class="header-center">
-        <div class="floor-indicator">
-          <span class="indicator-dot"></span>
-          <span id="current-location-text">Ka Lama • 1st & 2nd Floor Directory</span>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="time-widget">
-          <div id="clock-time">12:00 PM</div>
-          <div id="clock-date">Thursday, Oct 16</div>
-        </div>
-        <button id="btn-return-home" class="btn-home-quick" title="Return to Home">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span>Home</span>
-        </button>
-      </div>
-    </header>
+<body class="kiosk-frame-mode">
 
-    <!-- MAIN VIEW CONTAINER -->
-    <main class="kiosk-main">
-      <!-- 1. HOME SCREEN (MAIN DASHBOARD) -->
-      <section id="view-home" class="view-panel active">
-        <div class="home-hero">
-          <div class="hero-content">
-            <span class="pill-tag">Welcome to UH Maui College</span>
-            <h2>Discover Business, Hospitality & Technology</h2>
-            <p>Explore degree programs, locate classrooms and faculty offices in Ka Lama, check active job opportunities, or let us know what you want to see on campus.</p>
+  <!-- TOP KIOSK CONTROLS (Preview & Display helper for testing) -->
+  <div id="kiosk-frame-bar">
+    <div class="frame-bar-left">
+      <span class="device-pill">43″ Vertical Kiosk (9:16)</span>
+      <span class="device-loc">Ka Lama Building • Floors 1 &amp; 2</span>
+    </div>
+    <div class="frame-bar-right">
+      <button id="toggle-display-mode" class="frame-btn" title="Toggle Portrait Frame / Full Window">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+        <span id="display-mode-label">Fit Window</span>
+      </button>
+      <button id="btn-fullscreen-toggle" class="frame-btn" title="Toggle True Fullscreen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <span>Fullscreen</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- KIOSK ENCLOSURE / BEZEL -->
+  <div id="kiosk-viewport">
+    <div id="kiosk-app">
+
+      <!-- ===================================================================
+           SHARED GLOBAL HEADER (Present on all screens with dynamic titles)
+           =================================================================== -->
+      <header class="kiosk-header" id="global-header">
+        <div class="header-left">
+          <div class="uh-logo-box" id="header-logo-badge">
+            <span class="logo-text">UHMC</span>
           </div>
-          <div class="hero-highlights">
-            <div class="highlight-item">
-              <span class="highlight-num">4</span>
-              <span class="highlight-label">Degree Pathways</span>
-            </div>
-            <div class="highlight-item">
-              <span class="highlight-num">100%</span>
-              <span class="highlight-label">Local & Transfer Ready</span>
-            </div>
+          <div class="header-screen-title">
+            <h1 id="screen-heading">Business Dept · Ka Lama</h1>
           </div>
         </div>
-
-        <div class="touch-grid">
-          <!-- Card 1: Programs -->
-          <button class="nav-tile tile-programs" data-view="view-programs">
-            <div class="tile-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10M6 14h6"/></svg>
-            </div>
-            <div class="tile-info">
-              <h3>Academic Programs</h3>
-              <p>Business, Hospitality, Accounting, and ABIT degrees</p>
-            </div>
-            <span class="tile-action">Explore Pathways →</span>
-          </button>
-
-          <!-- Card 2: Building Directory -->
-          <button class="nav-tile tile-directory" data-view="view-directory">
-            <div class="tile-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-            </div>
-            <div class="tile-info">
-              <h3>Ka Lama Directory & Maps</h3>
-              <p>Find classrooms, computer labs, and faculty offices</p>
-            </div>
-            <span class="tile-action">View Floor Directory →</span>
-          </button>
-
-          <!-- Card 3: Job Board -->
-          <button class="nav-tile tile-jobs" data-view="view-jobs">
-            <div class="tile-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            </div>
-            <div class="tile-info">
-              <h3>Career & Job Board</h3>
-              <p>Local Maui internships, student gigs, and business careers</p>
-            </div>
-            <span class="tile-action">Browse Openings →</span>
-          </button>
-
-          <!-- Card 4: Campus Survey -->
-          <button class="nav-tile tile-survey" data-view="view-survey">
-            <div class="tile-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
-            </div>
-            <div class="tile-info">
-              <h3>Student Voice Survey</h3>
-              <p>Tell us what you'd like to see more of on campus!</p>
-            </div>
-            <span class="tile-action">Take 30-Sec Survey →</span>
-          </button>
-
-          <!-- Card 5: Events & Announcements -->
-          <button class="nav-tile tile-events" data-view="view-events">
-            <div class="tile-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-            </div>
-            <div class="tile-info">
-              <h3>Events & Spotlights</h3>
-              <p>Guest lectures, club meetings, and campus deadlines</p>
-            </div>
-            <span class="tile-action">Check Schedule →</span>
-          </button>
-
-          <!-- Card 6: UHMC Web Access -->
-          <button class="nav-tile tile-portal" data-view="view-portal">
-            <div class="tile-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            </div>
-            <div class="tile-info">
-              <h3>UHMC Web Access</h3>
-              <p>Quick access to STAR, Laulima, MyUH & campus resources</p>
-            </div>
-            <span class="tile-action">Open Web Portal →</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- 2. ACADEMIC PROGRAMS VIEW -->
-      <section id="view-programs" class="view-panel">
-        <div class="view-header">
-          <div>
-            <h2>UHMC Business & Technology Programs</h2>
-            <p>Prepare for high-demand careers in Maui County and beyond.</p>
-          </div>
-          <button class="btn-back">← Back to Menu</button>
-        </div>
-
-        <div class="program-tabs">
-          <button class="tab-btn active" data-program="abit">ABIT (Applied Business & Info Tech)</button>
-          <button class="tab-btn" data-program="business">Business Administration</button>
-          <button class="tab-btn" data-program="hospitality">Hospitality & Tourism</button>
-          <button class="tab-btn" data-program="accounting">Accounting</button>
-        </div>
-
-        <div class="program-content" id="program-display">
-          <!-- Injected via JavaScript -->
-        </div>
-      </section>
-
-      <!-- 3. KA LAMA BUILDING DIRECTORY VIEW -->
-      <section id="view-directory" class="view-panel">
-        <div class="view-header">
-          <div>
-            <h2>Ka Lama Building Directory & Maps</h2>
-            <p>Touch a room or floor to view details and directions.</p>
-          </div>
-          <button class="btn-back">← Back to Menu</button>
-        </div>
-
-        <div class="directory-controls">
-          <div class="floor-toggle">
-            <button class="floor-btn active" data-floor="1">1st Floor (Ground Level)</button>
-            <button class="floor-btn" data-floor="2">2nd Floor (Offices & Labs)</button>
-          </div>
-          <div class="search-box">
-            <input type="text" id="directory-search" placeholder="Search room, faculty, or department..." autocomplete="off">
-            <button id="clear-search" class="btn-clear-search">Clear</button>
+        <div class="header-right">
+          <div class="header-time-block" id="header-time">12:30 PM</div>
+          <div class="header-date-weather">
+            <span id="header-date">Thursday, Oct 25</span>
+            <span class="sep">·</span>
+            <span id="header-weather" class="weather-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              78°F Kahului
+            </span>
           </div>
         </div>
+      </header>
 
-        <div class="directory-layout">
-          <!-- Interactive Floor Map Card -->
-          <div class="map-card">
-            <div class="map-header">
-              <span id="map-floor-title">Floor 1 Overview</span>
-              <span class="map-hint">Interactive Layout Diagram</span>
+      <!-- ===================================================================
+           MAIN CONTENT AREA FOR VIEWS
+           =================================================================== -->
+      <div class="kiosk-body">
+
+        <!-- ---------------------------------------------------------------
+             PAGE 1: ATTRACT / IDLE SCREEN
+             --------------------------------------------------------------- -->
+        <section id="view-attract" class="view-panel active">
+          <div class="attract-container" id="attract-touch-trigger">
+            <!-- 1. Rotating Slideshow (Portrait Flyers) -->
+            <div class="slideshow-card">
+              <div class="slideshow-track" id="attract-slideshow">
+                <!-- Slide 1 -->
+                <div class="flyer-slide active" style="--flyer-bg: linear-gradient(145deg, #024731 0%, #00251c 100%);">
+                  <div class="flyer-overlay"></div>
+                  <div class="flyer-badge">Featured Program</div>
+                  <div class="flyer-body">
+                    <h2>Applied Business &amp; Info Tech (ABIT)</h2>
+                    <p class="flyer-lead">Empowering the next generation of island tech entrepreneurs &amp; innovators.</p>
+                    <div class="flyer-meta-row">
+                      <span class="tag-gold">4-Year Bachelor Degree</span>
+                      <span class="tag-gold">100% On Maui</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="flyer-slide" style="--flyer-bg: linear-gradient(145deg, #093758 0%, #031c2e 100%);">
+                  <div class="flyer-overlay"></div>
+                  <div class="flyer-badge">Hospitality &amp; Tourism</div>
+                  <div class="flyer-body">
+                    <h2>Lead Maui's Premier Resorts &amp; Tourism</h2>
+                    <p class="flyer-lead">Hands-on leadership training, resort practicums, and island management pathways.</p>
+                    <div class="flyer-meta-row">
+                      <span class="tag-gold">Guaranteed Internships</span>
+                      <span class="tag-gold">Direct Career Track</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="flyer-slide" style="--flyer-bg: linear-gradient(145deg, #5c2c16 0%, #2f1508 100%);">
+                  <div class="flyer-overlay"></div>
+                  <div class="flyer-badge">Student Event</div>
+                  <div class="flyer-body">
+                    <h2>Fall Business Capstone &amp; Pitch Day</h2>
+                    <p class="flyer-lead">Join us Nov 12 in Ka Lama 102 as senior students pitch real business ventures!</p>
+                    <div class="flyer-meta-row">
+                      <span class="tag-gold">Ka Lama 102</span>
+                      <span class="tag-gold">Free Refreshments</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="flyer-slide" style="--flyer-bg: linear-gradient(145deg, #2b3a42 0%, #151e23 100%);">
+                  <div class="flyer-overlay"></div>
+                  <div class="flyer-badge">Career Opportunity</div>
+                  <div class="flyer-body">
+                    <h2>Student Help &amp; Lab Assistant Positions</h2>
+                    <p class="flyer-lead">Work in Ka Lama Computer Labs while taking classes. Flexible campus hours.</p>
+                    <div class="flyer-meta-row">
+                      <span class="tag-gold">$16.50/hr</span>
+                      <span class="tag-gold">Apply at Ka Lama 203</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="flyer-slide" style="--flyer-bg: linear-gradient(145deg, #0a4d3c 0%, #03251c 100%);">
+                  <div class="flyer-overlay"></div>
+                  <div class="flyer-badge">Advising &amp; Registration</div>
+                  <div class="flyer-body">
+                    <h2>Spring 2027 Registration Starts Soon</h2>
+                    <p class="flyer-lead">Meet with Ka Lama academic counselors to plan your STAR GPS schedule.</p>
+                    <div class="flyer-meta-row">
+                      <span class="tag-gold">Walk-ins Welcome</span>
+                      <span class="tag-gold">Ka Lama 2nd Floor</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pagination Dots -->
+              <div class="slideshow-dots" id="slideshow-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
             </div>
-            <div class="svg-map-container" id="svg-map-wrapper">
-              <!-- Interactive SVG rendered here -->
+
+            <!-- 2. Today in Ka Lama Schedule Card -->
+            <div class="attract-card today-card">
+              <div class="card-head">
+                <div class="title-with-icon">
+                  <span class="icon-indicator"></span>
+                  <h3>Today in Ka Lama</h3>
+                </div>
+                <span class="badge-subtle">Building Schedule</span>
+              </div>
+              <div class="today-list">
+                <div class="today-item">
+                  <div class="time-pill">9:00 AM</div>
+                  <div class="today-details">
+                    <span class="item-title">BUS 120: Principles of Management</span>
+                    <span class="item-sub">Ka Lama 101 Lecture Hall</span>
+                  </div>
+                </div>
+                <div class="today-item">
+                  <div class="time-pill">11:30 AM</div>
+                  <div class="today-details">
+                    <span class="item-title">HOST Industry Guest Speaker &amp; Lunch</span>
+                    <span class="item-sub">Ka Lama 102 Active Learning Lab</span>
+                  </div>
+                </div>
+                <div class="today-item">
+                  <div class="time-pill">2:00 PM</div>
+                  <div class="today-details">
+                    <span class="item-title">ABIT Open Cyber Lab &amp; Mentoring</span>
+                    <span class="item-sub">Ka Lama 202 Technology Hub</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Featured Job Posting Card -->
+            <div class="attract-card featured-job-card">
+              <div class="qr-col">
+                <div class="qr-box" id="qr-attract-job">
+                  <!-- SVG QR Code -->
+                  <svg viewBox="0 0 29 29" class="qr-code-svg">
+                    <path fill="#000" d="M0 0h7v7H0zm1 1v5h5V1zm8 0h1v1H9zm2 0h2v1h-2zm3 0h1v1h-1zm2 0h1v1h-1zm3 0h1v1h-1zm2 0h7v7h-7zm1 1v5h5V1zm-9 1h1v1h-1zm3 0h1v2h-1zm-4 1h2v1H9zm7 0h1v1h-1zm-6 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm2 0h1v1h-1zm-7 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm-8 1h1v1H2zm3 0h1v1H5zm6 0h2v1h-2zm4 0h1v1h-1zm2 0h2v1h-2zm5 0h1v1h-1zm-18 1h2v1H3zm6 0h1v1H9zm3 0h1v1h-1zm4 0h1v1h-1zm3 0h1v1h-1zm2 0h1v1h-1zm-18 1h1v1H1zm2 0h1v1H3zm3 0h2v1H6zm3 0h1v1H9zm5 0h1v1h-1zm2 0h1v1h-1zm4 0h1v1h-1zm-17 1h1v1H0zm4 0h1v1H4zm3 0h2v1H7zm4 0h1v1h-1zm2 0h2v1h-2zm4 0h1v1h-1zm-17 1h1v1H1zm3 0h1v1H4zm3 0h1v1H7zm3 0h2v1h-2zm4 0h1v1h-1zm3 0h1v1h-1zm-18 1h7v7H0zm1 1v5h5v-5zm8 0h1v1H9zm2 0h1v1h-1zm4 0h1v2h-1zm3 0h2v1h-2zm-8 1h2v1H9zm7 0h2v1h-2zm-6 1h1v1h-1zm3 0h1v1h-1zm4 0h1v1h-1zm-6 1h2v1h-2zm3 0h1v1h-1zm3 0h1v1h-1zm-8 1h1v1H8zm2 0h1v1h-1zm2 0h1v1h-1zm5 0h1v1h-1zm-8 1h1v1H9zm4 0h2v1h-2zm4 0h1v1h-1zM2 2h3v3H2zm20 0h3v3h-3zM2 24h3v3H2z"/>
+                  </svg>
+                  <span class="qr-label">QR CODE</span>
+                </div>
+              </div>
+              <div class="job-info-col">
+                <span class="job-badge-pill">Hot Job On Maui</span>
+                <h4 class="job-title-highlight">Business Analyst Intern</h4>
+                <p class="job-meta-line">Maui High Performance Computing Center (MHPCC)</p>
+                <div class="job-perks">
+                  <span>💰 $22.00 / hr</span>
+                  <span>📍 Kihei, Maui</span>
+                  <span>⏱️ Flexible Student Hours</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Scrolling News Ticker -->
+            <div class="news-ticker-bar">
+              <div class="ticker-badge">NEWS</div>
+              <div class="ticker-viewport">
+                <div class="ticker-track">
+                  <span>UHMC Spring 2027 Registration opens Dec 1</span>
+                  <span class="bullet">•</span>
+                  <span>Ka Lama 201 Open Computer Lab hours: Mon–Fri 8:00 AM – 5:00 PM</span>
+                  <span class="bullet">•</span>
+                  <span>Free VITA Volunteer Tax Preparation starting next month</span>
+                  <span class="bullet">•</span>
+                  <span>Maui County Internship stipend applications now open</span>
+                  <span class="bullet">•</span>
+                  <span>Ka Lama Advising Office walk-ins available daily on 2nd floor</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Big Dark Touch Banner -->
+            <div class="touch-begin-banner">
+              <div class="pulse-ring"></div>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+              <span>Touch anywhere to begin</span>
             </div>
           </div>
+        </section>
 
-          <!-- Room Listings / Search Results -->
-          <div class="directory-list-card">
-            <h3>Directory Listings (<span id="directory-count">0</span>)</h3>
-            <div class="directory-items" id="directory-items-container">
+        <!-- ---------------------------------------------------------------
+             PAGE 2: MAIN MENU
+             --------------------------------------------------------------- -->
+        <section id="view-menu" class="view-panel">
+          <div class="menu-container">
+            <div class="menu-intro">
+              <h2>What would you like to do?</h2>
+            </div>
+
+            <!-- Featured Promo Banner (Display only, out of easy reach) -->
+            <div class="featured-banner-card" data-action="view-events">
+              <div class="banner-badge">FEATURED ANNOUNCEMENT</div>
+              <div class="banner-content">
+                <h3>Spring 2027 Registration &amp; Academic Advising Now Open</h3>
+                <p>Plan your degree pathways with Ka Lama business faculty. Stop by 2nd Floor offices or schedule via STAR GPS.</p>
+              </div>
+              <div class="banner-action-indicator">
+                <span>View Details →</span>
+              </div>
+            </div>
+
+            <div class="menu-section-label">
+              <span>Tap a tile below</span>
+            </div>
+
+            <!-- 2x3 Grid of 6 Tiles -->
+            <div class="menu-grid-2x3">
+              <!-- Tile 1 -->
+              <button class="menu-tile" data-view="view-programs">
+                <div class="tile-icon-circle">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10M6 14h6"/></svg>
+                </div>
+                <div class="tile-text">
+                  <h3>Business Programs</h3>
+                  <p>Business · Hospitality · Accounting · ABIT</p>
+                </div>
+              </button>
+
+              <!-- Tile 2 -->
+              <button class="menu-tile" data-view="view-directory">
+                <div class="tile-icon-circle">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                </div>
+                <div class="tile-text">
+                  <h3>Building Directory</h3>
+                  <p>Rooms and offices, floors 1–2</p>
+                </div>
+              </button>
+
+              <!-- Tile 3 -->
+              <button class="menu-tile" data-view="view-jobs">
+                <div class="tile-icon-circle">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </div>
+                <div class="tile-text">
+                  <h3>Job Opportunities</h3>
+                  <p>Business jobs and internships</p>
+                </div>
+              </button>
+
+              <!-- Tile 4 -->
+              <button class="menu-tile" data-view="view-events">
+                <div class="tile-icon-circle">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div class="tile-text">
+                  <h3>Events &amp; News</h3>
+                  <p>Events, marketing, special occasions</p>
+                </div>
+              </button>
+
+              <!-- Tile 5 -->
+              <button class="menu-tile" data-view="view-survey">
+                <div class="tile-icon-circle">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+                </div>
+                <div class="tile-text">
+                  <h3>Student Survey</h3>
+                  <p>Share your ideas for campus</p>
+                </div>
+              </button>
+
+              <!-- Tile 6 -->
+              <button class="menu-tile" data-view="view-website">
+                <div class="tile-icon-circle">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <div class="tile-text">
+                  <h3>UHMC Website</h3>
+                  <p>Browse maui.hawaii.edu</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------------
+             PAGE 3: BUILDING DIRECTORY
+             --------------------------------------------------------------- -->
+        <section id="view-directory" class="view-panel">
+          <div class="directory-container">
+            <div class="dir-selection-bar">
+              <div class="dir-selected-info">
+                <span class="floor-title-active" id="dir-active-floor-label">Ka Lama · 1st Floor</span>
+                <span class="selected-room-pill" id="dir-active-room-pill">Selected: Rm KL-101 · Business Dept. Office</span>
+              </div>
+            </div>
+
+            <!-- Interactive Floor Map Card -->
+            <div class="floor-map-card">
+              <div class="map-inner-header">
+                <span class="map-tag">FLOOR MAP</span>
+                <span class="map-subtag">Selected room highlighted + walking route</span>
+              </div>
+
+              <div class="svg-map-frame" id="svg-map-frame">
+                <!-- Injected via JS -->
+              </div>
+
+              <!-- Map Overlay Controls -->
+              <div class="map-overlay-controls">
+                <div class="kiosk-location-badge">
+                  <span class="pulse-dot"></span>
+                  <span>You are here</span>
+                </div>
+                <div class="zoom-buttons">
+                  <button id="btn-map-zoom-in" class="zoom-btn" title="Zoom in">+</button>
+                  <button id="btn-map-zoom-out" class="zoom-btn" title="Zoom out">−</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="dir-search-wrap">
+              <label for="input-dir-search">Search rooms, offices, or people</label>
+              <div class="search-input-group">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="input-dir-search" placeholder="Type a name or room number" autocomplete="off">
+                <button id="btn-clear-dir-search" class="clear-search-btn">Clear</button>
+              </div>
+            </div>
+
+            <!-- Floor Selector Pills -->
+            <div class="floor-toggle-pills">
+              <button class="floor-pill-btn active" data-floor="1">1st Floor</button>
+              <button class="floor-pill-btn" data-floor="2">2nd Floor</button>
+            </div>
+
+            <!-- Category Filter Chips -->
+            <div class="category-filter-chips">
+              <button class="cat-chip active" data-cat="all">All</button>
+              <button class="cat-chip" data-cat="offices">Offices</button>
+              <button class="cat-chip" data-cat="classrooms">Classrooms</button>
+              <button class="cat-chip" data-cat="labs">Labs</button>
+              <button class="cat-chip" data-cat="restrooms">Restrooms</button>
+              <button class="cat-chip" data-cat="elevator">Elevator &amp; Stairs</button>
+            </div>
+
+            <!-- Directory List Items -->
+            <div class="dir-list-container" id="dir-list-container">
               <!-- Injected via JS -->
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- 4. JOB BOARD VIEW -->
-      <section id="view-jobs" class="view-panel">
-        <div class="view-header">
-          <div>
-            <h2>Business & Student Career Opportunities</h2>
-            <p>Connecting Maui College students with internships and career paths.</p>
-          </div>
-          <button class="btn-back">← Back to Menu</button>
-        </div>
+        <!-- ---------------------------------------------------------------
+             PAGE 4: BUSINESS PROGRAMS
+             --------------------------------------------------------------- -->
+        <section id="view-programs" class="view-panel">
+          <div class="programs-container">
+            <!-- Program Hero Banner / Photo -->
+            <div class="program-hero-card" id="program-hero-card">
+              <div class="program-media-badge">PROGRAM OVERVIEW</div>
+              <div class="program-hero-title-area">
+                <h2 id="prog-title">Business Administration</h2>
+                <p id="prog-tagline" class="prog-tagline">Empowering island business leaders, entrepreneurs, and managers.</p>
+              </div>
+            </div>
 
-        <div class="filter-bar">
-          <button class="filter-pill active" data-filter="all">All Postings</button>
-          <button class="filter-pill" data-filter="internship">Student Internships</button>
-          <button class="filter-pill" data-filter="part-time">Part-Time / Student Help</button>
-          <button class="filter-pill" data-filter="full-time">Full-Time Business Careers</button>
-        </div>
+            <!-- Program Description -->
+            <div class="program-desc-card">
+              <p id="prog-description">Comprehensive education in management, marketing, financial planning, business law, and entrepreneurial ventures on Maui.</p>
+            </div>
 
-        <div class="jobs-grid" id="jobs-container">
-          <!-- Injected via JS -->
-        </div>
-      </section>
+            <!-- 2-Column Cards: Degrees & Career Paths -->
+            <div class="program-two-col">
+              <!-- Left Card -->
+              <div class="program-subcard">
+                <h3>Degrees &amp; Certificates</h3>
+                <div class="degrees-list" id="prog-degrees-list">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
 
-      <!-- 5. STUDENT SURVEY VIEW -->
-      <section id="view-survey" class="view-panel">
-        <div class="view-header">
-          <div>
-            <h2>Student Voice: What would you like to see on campus?</h2>
-            <p>Tap your choice below to vote. Help shape upcoming campus activities!</p>
-          </div>
-          <button class="btn-back">← Back to Menu</button>
-        </div>
+              <!-- Right Card -->
+              <div class="program-subcard">
+                <h3>Career Paths</h3>
+                <div class="career-chips-grid" id="prog-careers-list">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+            </div>
 
-        <div class="survey-layout">
-          <div class="survey-voting-card" id="survey-form-box">
-            <h3>What would you like to see/happen more on campus?</h3>
-            <p class="survey-sub">Cast your vote with a single touch:</p>
+            <!-- Scan to Apply Card -->
+            <div class="program-advisor-card">
+              <div class="advisor-qr-box">
+                <svg viewBox="0 0 29 29" class="qr-code-svg">
+                  <path fill="#000" d="M0 0h7v7H0zm1 1v5h5V1zm8 0h1v1H9zm2 0h2v1h-2zm3 0h1v1h-1zm2 0h1v1h-1zm3 0h1v1h-1zm2 0h7v7h-7zm1 1v5h5V1zm-9 1h1v1h-1zm3 0h1v2h-1zm-4 1h2v1H9zm7 0h1v1h-1zm-6 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm2 0h1v1h-1zm-7 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm-8 1h1v1H2zm3 0h1v1H5zm6 0h2v1h-2zm4 0h1v1h-1zm2 0h2v1h-2zm5 0h1v1h-1zm-18 1h2v1H3zm6 0h1v1H9zm3 0h1v1h-1zm4 0h1v1h-1zm3 0h1v1h-1zm2 0h1v1h-1zm-18 1h1v1H1zm2 0h1v1H3zm3 0h2v1H6zm3 0h1v1H9zm5 0h1v1h-1zm2 0h1v1h-1zm4 0h1v1h-1zm-17 1h1v1H0zm4 0h1v1H4zm3 0h2v1H7zm4 0h1v1h-1zm2 0h2v1h-2zm4 0h1v1h-1zm-17 1h1v1H1zm3 0h1v1H4zm3 0h1v1H7zm3 0h2v1h-2zm4 0h1v1h-1zm3 0h1v1h-1zm-18 1h7v7H0zm1 1v5h5v-5zm8 0h1v1H9zm2 0h1v1h-1zm4 0h1v2h-1zm3 0h2v1h-2zm-8 1h2v1H9zm7 0h2v1h-2zm-6 1h1v1h-1zm3 0h1v1h-1zm4 0h1v1h-1zm-6 1h2v1h-2zm3 0h1v1h-1zm3 0h1v1h-1zm-8 1h1v1H8zm2 0h1v1h-1zm2 0h1v1h-1zm5 0h1v1h-1zm-8 1h1v1H9zm4 0h2v1h-2zm4 0h1v1h-1zM2 2h3v3H2zm20 0h3v3h-3zM2 24h3v3H2z"/>
+                </svg>
+                <span>QR CODE</span>
+              </div>
+              <div class="advisor-info">
+                <h4>Scan to learn more &amp; apply</h4>
+                <p class="advisor-line" id="prog-advisor-name">Advisor: Business Dept Faculty · Rm KL-203</p>
+                <p class="advisor-email" id="prog-advisor-email">mauibus@hawaii.edu</p>
+              </div>
+            </div>
 
-            <div class="survey-options">
-              <button class="survey-choice-btn" data-choice="events">
-                <span class="choice-icon">🎉</span>
-                <span class="choice-text">More Campus Social Events & Food Trucks</span>
-              </button>
-              <button class="survey-choice-btn" data-choice="mentorship">
-                <span class="choice-icon">💼</span>
-                <span class="choice-text">Business Mentorship & Industry Networking Nights</span>
-              </button>
-              <button class="survey-choice-btn" data-choice="study">
-                <span class="choice-icon">☕</span>
-                <span class="choice-text">24/7 Quiet Study Lounges & Free Coffee</span>
-              </button>
-              <button class="survey-choice-btn" data-choice="workshops">
-                <span class="choice-icon">🚀</span>
-                <span class="choice-text">AI, Tech & Professional Certification Workshops</span>
-              </button>
-              <button class="survey-choice-btn" data-choice="sports">
-                <span class="choice-icon">⚽</span>
-                <span class="choice-text">Outdoor Sports & Student Wellness Tournaments</span>
-              </button>
+            <!-- Program Selector Tabs at Bottom -->
+            <div class="program-picker-area">
+              <span class="picker-label">Choose a program</span>
+              <div class="program-nav-tabs">
+                <button class="prog-tab-btn active" data-prog="business">Business</button>
+                <button class="prog-tab-btn" data-prog="hospitality">Hospitality</button>
+                <button class="prog-tab-btn" data-prog="accounting">Accounting</button>
+                <button class="prog-tab-btn" data-prog="abit">ABIT</button>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div class="survey-results-card">
-            <div class="results-header">
-              <h3>Live Student Feedback</h3>
-              <span class="votes-total" id="total-votes-count">Votes Cast: 142</span>
+        <!-- ---------------------------------------------------------------
+             PAGE 5: JOB OPPORTUNITIES
+             --------------------------------------------------------------- -->
+        <section id="view-jobs" class="view-panel">
+          <div class="jobs-container">
+            <!-- Selected Posting Detail Card (Top) -->
+            <div class="selected-job-hero-card" id="selected-job-hero">
+              <div class="selected-job-meta-top">
+                <span class="sel-tag">Selected posting</span>
+                <span class="sel-posted-date" id="sel-job-posted">Posted Oct 20</span>
+              </div>
+              <h2 id="sel-job-title" class="sel-job-title">Business Analyst Intern</h2>
+              <div id="sel-job-employer" class="sel-job-employer">Maui High Performance Computing Center (MHPCC)</div>
+
+              <!-- 2x2 Specs Grid -->
+              <div class="job-specs-grid">
+                <div class="spec-cell">
+                  <span class="spec-label">Pay</span>
+                  <span class="spec-val" id="sel-job-pay">$22.00 / hr</span>
+                </div>
+                <div class="spec-cell">
+                  <span class="spec-label">Schedule</span>
+                  <span class="spec-val" id="sel-job-schedule">15–20 hrs / wk (Flexible)</span>
+                </div>
+                <div class="spec-cell">
+                  <span class="spec-label">Location</span>
+                  <span class="spec-val" id="sel-job-location">Kihei, Maui (Hybrid)</span>
+                </div>
+                <div class="spec-cell">
+                  <span class="spec-label">Apply by</span>
+                  <span class="spec-val" id="sel-job-deadline">Nov 30, 2026</span>
+                </div>
+              </div>
+
+              <p id="sel-job-desc" class="sel-job-desc">
+                Assist defense and research analysts with operational workflows, data reporting, and tech documentation. Open to ABIT and Business students.
+              </p>
+
+              <!-- QR Card inside job card -->
+              <div class="job-apply-qr-card">
+                <div class="job-qr-box">
+                  <svg viewBox="0 0 29 29" class="qr-code-svg">
+                    <path fill="#000" d="M0 0h7v7H0zm1 1v5h5V1zm8 0h1v1H9zm2 0h2v1h-2zm3 0h1v1h-1zm2 0h1v1h-1zm3 0h1v1h-1zm2 0h7v7h-7zm1 1v5h5V1zm-9 1h1v1h-1zm3 0h1v2h-1zm-4 1h2v1H9zm7 0h1v1h-1zm-6 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm2 0h1v1h-1zm-7 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm-8 1h1v1H2zm3 0h1v1H5zm6 0h2v1h-2zm4 0h1v1h-1zm2 0h2v1h-2zm5 0h1v1h-1zm-18 1h2v1H3zm6 0h1v1H9zm3 0h1v1h-1zm4 0h1v1h-1zm3 0h1v1h-1zm2 0h1v1h-1zm-18 1h1v1H1zm2 0h1v1H3zm3 0h2v1H6zm3 0h1v1H9zm5 0h1v1h-1zm2 0h1v1h-1zm4 0h1v1h-1zm-17 1h1v1H0zm4 0h1v1H4zm3 0h2v1H7zm4 0h1v1h-1zm2 0h2v1h-2zm4 0h1v1h-1zm-17 1h1v1H1zm3 0h1v1H4zm3 0h1v1H7zm3 0h2v1h-2zm4 0h1v1h-1zm3 0h1v1h-1zm-18 1h7v7H0zm1 1v5h5v-5zm8 0h1v1H9zm2 0h1v1h-1zm4 0h1v2h-1zm3 0h2v1h-2zm-8 1h2v1H9zm7 0h2v1h-2zm-6 1h1v1h-1zm3 0h1v1h-1zm4 0h1v1h-1zm-6 1h2v1h-2zm3 0h1v1h-1zm3 0h1v1h-1zm-8 1h1v1H8zm2 0h1v1h-1zm2 0h1v1h-1zm5 0h1v1h-1zm-8 1h1v1H9zm4 0h2v1h-2zm4 0h1v1h-1zM2 2h3v3H2zm20 0h3v3h-3zM2 24h3v3H2z"/>
+                  </svg>
+                  <span>QR CODE</span>
+                </div>
+                <div class="job-apply-text">
+                  <h4>Scan to view &amp; apply on your phone</h4>
+                  <p>Postings managed by the Business Dept.</p>
+                </div>
+              </div>
             </div>
-            <div class="results-bars" id="results-bars-container">
+
+            <!-- Lower Section: Listings & Filters -->
+            <div class="jobs-list-section">
+              <div class="jobs-count-header">
+                <span id="jobs-count-label"><strong>6</strong> open positions</span>
+                <span class="jobs-updated-tag">Updated Today</span>
+              </div>
+
+              <!-- Filter Pills -->
+              <div class="job-filter-chips">
+                <button class="job-pill active" data-jfilter="all">All</button>
+                <button class="job-pill" data-jfilter="business">Business</button>
+                <button class="job-pill" data-jfilter="hospitality">Hospitality</button>
+                <button class="job-pill" data-jfilter="accounting">Accounting</button>
+                <button class="job-pill" data-jfilter="tech">ABIT / Tech</button>
+                <button class="job-pill" data-jfilter="internship">Internships</button>
+              </div>
+
+              <!-- Jobs List -->
+              <div class="jobs-rows-container" id="jobs-rows-container">
+                <!-- Injected via JS -->
+              </div>
+
+              <!-- Pagination -->
+              <div class="jobs-pagination">
+                <button id="btn-job-prev" class="page-btn">‹ Prev</button>
+                <span id="job-page-info">Page 1 of 2</span>
+                <button id="btn-job-next" class="page-btn">Next ›</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------------
+             PAGE 6: EVENTS & NEWS
+             --------------------------------------------------------------- -->
+        <section id="view-events" class="view-panel">
+          <div class="events-container">
+            <!-- Featured Event Hero Flyer Card -->
+            <div class="featured-event-hero">
+              <div class="event-flyer-art">
+                <div class="flyer-art-content">
+                  <span class="art-badge">FEATURED EVENT FLYER</span>
+                  <h3>ABIT Senior Capstone &amp; Venture Pitch Showcase</h3>
+                  <p>Maui tech, software &amp; business startup presentations by UHMC graduates.</p>
+                </div>
+              </div>
+
+              <div class="featured-event-content">
+                <div class="event-tags-row">
+                  <span class="tag-featured">FEATURED</span>
+                  <span class="tag-cat">Academic &amp; Tech</span>
+                </div>
+                <h2 class="featured-event-title">Annual Business Pitch &amp; Tech Demo Day</h2>
+                <div class="featured-event-loc">
+                  <span class="loc-item">📅 Friday, Nov 12</span>
+                  <span class="loc-item">⏰ 1:00 PM – 4:00 PM</span>
+                  <span class="loc-item">📍 Ka Lama Rm 102</span>
+                </div>
+                <p class="featured-event-summary">
+                  Join our community of Maui mentors, entrepreneurs, and students. Refreshments served. Open to all students, alumni, and local business leaders.
+                </p>
+
+                <!-- RSVP QR Code -->
+                <div class="event-rsvp-card">
+                  <div class="event-qr-box">
+                    <svg viewBox="0 0 29 29" class="qr-code-svg">
+                      <path fill="#000" d="M0 0h7v7H0zm1 1v5h5V1zm8 0h1v1H9zm2 0h2v1h-2zm3 0h1v1h-1zm2 0h1v1h-1zm3 0h1v1h-1zm2 0h7v7h-7zm1 1v5h5V1zm-9 1h1v1h-1zm3 0h1v2h-1zm-4 1h2v1H9zm7 0h1v1h-1zm-6 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm2 0h1v1h-1zm-7 1h1v1H9zm2 0h1v1h-1zm1 1h1v1h-1zm-8 1h1v1H2zm3 0h1v1H5zm6 0h2v1h-2zm4 0h1v1h-1zm2 0h2v1h-2zm5 0h1v1h-1zm-18 1h2v1H3zm6 0h1v1H9zm3 0h1v1h-1zm4 0h1v1h-1zm3 0h1v1h-1zm2 0h1v1h-1zm-18 1h1v1H1zm2 0h1v1H3zm3 0h2v1H6zm3 0h1v1H9zm5 0h1v1h-1zm2 0h1v1h-1zm4 0h1v1h-1zm-17 1h1v1H0zm4 0h1v1H4zm3 0h2v1H7zm4 0h1v1h-1zm2 0h2v1h-2zm4 0h1v1h-1zm-17 1h1v1H1zm3 0h1v1H4zm3 0h1v1H7zm3 0h2v1h-2zm4 0h1v1h-1zm3 0h1v1h-1zm-18 1h7v7H0zm1 1v5h5v-5zm8 0h1v1H9zm2 0h1v1h-1zm4 0h1v2h-1zm3 0h2v1h-2zm-8 1h2v1H9zm7 0h2v1h-2zm-6 1h1v1h-1zm3 0h1v1h-1zm4 0h1v1h-1zm-6 1h2v1h-2zm3 0h1v1h-1zm3 0h1v1h-1zm-8 1h1v1H8zm2 0h1v1h-1zm2 0h1v1h-1zm5 0h1v1h-1zm-8 1h1v1H9zm4 0h2v1h-2zm4 0h1v1h-1zM2 2h3v3H2zm20 0h3v3h-3zM2 24h3v3H2z"/>
+                    </svg>
+                    <span>QR CODE</span>
+                  </div>
+                  <div class="rsvp-text">
+                    <h4>Scan to RSVP or add to your calendar</h4>
+                    <p>Free entry • Digital calendar pass &amp; reminders</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Time Filter Tabs -->
+            <div class="event-time-tabs">
+              <button class="event-time-btn active" data-efilter="week">This Week</button>
+              <button class="event-time-btn" data-efilter="month">This Month</button>
+              <button class="event-time-btn" data-efilter="special">Special Occasions</button>
+            </div>
+
+            <!-- Events List Cards -->
+            <div class="events-cards-list" id="events-cards-list">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------------
+             PAGE 7: STUDENT SURVEY
+             --------------------------------------------------------------- -->
+        <section id="view-survey" class="view-panel">
+          <div class="survey-container">
+            <!-- Progress & Privacy Header -->
+            <div class="survey-progress-header">
+              <div class="survey-step-line">
+                <span class="step-label" id="survey-step-label">Question 1 of 3</span>
+                <div class="survey-progress-bar">
+                  <div class="survey-progress-fill" id="survey-progress-fill" style="width: 33%;"></div>
+                </div>
+              </div>
+              <div class="survey-privacy-tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Anonymous · no personal info collected</span>
+              </div>
+            </div>
+
+            <!-- Survey Question -->
+            <div class="survey-question-block">
+              <h2 id="survey-question-text">What would you like to see or happen more on campus?</h2>
+            </div>
+
+            <!-- Question Graphic / Context card -->
+            <div class="survey-art-card">
+              <div class="survey-art-inner">
+                <span class="survey-art-icon" id="survey-art-icon">🎓</span>
+                <span class="survey-art-subtitle" id="survey-art-subtitle">UHMC Student Voice • Shaping Campus Life</span>
+              </div>
+            </div>
+
+            <div class="survey-instruction">
+              <span>Choose all that apply</span>
+            </div>
+
+            <!-- Multi-Select Options Grid (2 columns) -->
+            <div class="survey-options-grid" id="survey-options-grid">
+              <!-- Injected via JS -->
+            </div>
+
+            <!-- Survey Footer Controls -->
+            <div class="survey-actions-bar">
+              <button id="btn-survey-skip" class="survey-btn-skip">Skip</button>
+              <button id="btn-survey-next" class="survey-btn-next">Next ›</button>
+            </div>
+
+            <!-- Live Results View (Shown on final submit) -->
+            <div id="survey-results-modal" class="survey-results-view hidden">
+              <div class="results-card-inner">
+                <div class="results-head">
+                  <span class="results-badge">Live Campus Feedback</span>
+                  <h3>Thank you for sharing your voice!</h3>
+                  <p>Your feedback was anonymously recorded. Here is what other students have voted for:</p>
+                </div>
+                <div class="results-bars-list" id="survey-bars-list">
+                  <!-- Injected via JS -->
+                </div>
+                <button id="btn-survey-restart" class="results-done-btn">Back to Menu</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------------------------------------------------------------
+             PAGE 8: EMBEDDED UHMC WEBSITE
+             --------------------------------------------------------------- -->
+        <section id="view-website" class="view-panel">
+          <div class="website-container">
+            <!-- Simulated Kiosk Web Browser Window -->
+            <div class="browser-window-card">
+              <!-- Security / Guard Header -->
+              <div class="browser-guard-notice">
+                <div class="guard-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>EMBEDDED UHMC WEBSITE (maui.hawaii.edu)</span>
+                </div>
+                <span class="guard-sub">touch-scrollable · links outside hawaii.edu blocked</span>
+              </div>
+
+              <!-- Browser Address Bar -->
+              <div class="browser-address-bar">
+                <div class="address-box">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  <span class="url-text" id="browser-url-display">maui.hawaii.edu / business</span>
+                </div>
+                <span class="readonly-badge">Read-only address</span>
+              </div>
+
+              <!-- Browser Controls Bar -->
+              <div class="browser-controls-row">
+                <button class="b-ctrl-btn" id="b-btn-back">‹ Back</button>
+                <button class="b-ctrl-btn" id="b-btn-forward">Forward ›</button>
+                <button class="b-ctrl-btn" id="b-btn-reload">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                  Reload
+                </button>
+                <button class="b-ctrl-btn" id="b-btn-home">Site Home</button>
+                <button class="b-ctrl-btn" id="b-btn-keyboard">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="8" x2="6" y2="8"/><line x1="10" y1="8" x2="10" y2="8"/><line x1="14" y1="8" x2="14" y2="8"/><line x1="18" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="18" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+                  Keyboard
+                </button>
+              </div>
+
+              <!-- Live Browser Viewport Content -->
+              <div class="browser-viewport" id="browser-viewport">
+                <!-- Portal Quick Directory -->
+                <div class="portal-quick-launch">
+                  <div class="launch-hero">
+                    <span class="launch-tag">UHMC Official Web Portal</span>
+                    <h3>Explore University of Hawaiʻi Maui College Services</h3>
+                    <p>Select any verified resource below to launch the official portal screen.</p>
+                  </div>
+
+                  <div class="web-destinations-grid">
+                    <div class="web-dest-card" data-url="maui.hawaii.edu/programs/business">
+                      <div class="dest-icon">💼</div>
+                      <div class="dest-info">
+                        <h4>Business Department Home</h4>
+                        <p>Faculty directory, course outlines, and business program news</p>
+                      </div>
+                      <span class="dest-arrow">→</span>
+                    </div>
+
+                    <div class="web-dest-card" data-url="myuh.hawaii.edu">
+                      <div class="dest-icon">🎓</div>
+                      <div class="dest-info">
+                        <h4>MyUH Student Portal</h4>
+                        <p>Class registration, grades, tuition, and student records</p>
+                      </div>
+                      <span class="dest-arrow">→</span>
+                    </div>
+
+                    <div class="web-dest-card" data-url="star.hawaii.edu">
+                      <div class="dest-icon">⭐</div>
+                      <div class="dest-info">
+                        <h4>STAR GPS Graduation</h4>
+                        <p>Degree pathway tracking, milestone audits &amp; academic advising</p>
+                      </div>
+                      <span class="dest-arrow">→</span>
+                    </div>
+
+                    <div class="web-dest-card" data-url="laulima.hawaii.edu">
+                      <div class="dest-icon">📚</div>
+                      <div class="dest-info">
+                        <h4>Laulima Online Learning</h4>
+                        <p>Course syllabi, assignments, quizzes, and class resources</p>
+                      </div>
+                      <span class="dest-arrow">→</span>
+                    </div>
+
+                    <div class="web-dest-card" data-url="maui.hawaii.edu/tlc">
+                      <div class="dest-icon">✏️</div>
+                      <div class="dest-info">
+                        <h4>The Learning Center (TLC)</h4>
+                        <p>Free peer tutoring in math, writing, and accounting</p>
+                      </div>
+                      <span class="dest-arrow">→</span>
+                    </div>
+
+                    <div class="web-dest-card" data-url="bookstore.hawaii.edu/maui">
+                      <div class="dest-icon">🛒</div>
+                      <div class="dest-info">
+                        <h4>UHMC Campus Store</h4>
+                        <p>Course textbooks, UH supplies, and campus apparel</p>
+                      </div>
+                      <span class="dest-arrow">→</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Security / Session Timeout Bar -->
+              <div class="browser-session-bar">
+                <div class="session-notice">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>Session clears after <strong>2 min</strong> idle. Please don't sign in to personal accounts here.</span>
+                </div>
+                <button id="btn-end-web-session" class="btn-end-session">End Session</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div> <!-- /kiosk-body -->
+
+      <!-- ===================================================================
+           SHARED GLOBAL FOOTER (Present on Screens 2–8)
+           =================================================================== -->
+      <footer class="kiosk-footer" id="global-footer">
+        <div class="footer-left">
+          <!-- On Screen 2, shows the idle note from wireframe: "Returns to Home after [60] s idle" -->
+          <div class="idle-return-hint" id="footer-idle-hint">
+            <span class="idle-dot"></span>
+            <span>Returns to Home after <strong id="idle-secs-counter">60</strong>s idle</span>
+          </div>
+        </div>
+        <div class="footer-right">
+          <!-- Screens 3-8 have [Main Menu], all have [Accessibility], [Help], [Exit] -->
+          <button id="btn-nav-mainmenu" class="footer-touch-btn" style="display:none;">Main Menu</button>
+          <button id="btn-nav-accessibility" class="footer-touch-btn">Accessibility</button>
+          <button id="btn-nav-help" class="footer-touch-btn">Help</button>
+          <button id="btn-nav-exit" class="footer-touch-btn">Exit</button>
+        </div>
+      </footer>
+
+      <!-- ===================================================================
+           MODALS (Accessibility, Help, Virtual Keyboard)
+           =================================================================== -->
+      <!-- Accessibility Modal -->
+      <div id="modal-accessibility" class="kiosk-modal-backdrop">
+        <div class="kiosk-modal-card">
+          <div class="modal-header">
+            <div class="title-wrap">
+              <span class="modal-icon">👁</span>
+              <h3>Accessibility &amp; Display Options</h3>
+            </div>
+            <button class="modal-close-btn" data-close="modal-accessibility">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="a11y-option-row">
+              <div>
+                <h4>High Contrast Mode</h4>
+                <p>Enhance visibility with pure black backgrounds and high-contrast gold text.</p>
+              </div>
+              <button id="btn-toggle-contrast" class="a11y-toggle-btn">Toggle Contrast</button>
+            </div>
+
+            <div class="a11y-option-row">
+              <div>
+                <h4>Text &amp; UI Sizing</h4>
+                <p>Enlarge typography and touch targets for easier interaction.</p>
+              </div>
+              <div class="a11y-size-buttons">
+                <button class="size-btn active" data-size="default">Regular</button>
+                <button class="size-btn" data-size="large">Large</button>
+                <button class="size-btn" data-size="xlarge">Extra Large</button>
+              </div>
+            </div>
+
+            <div class="a11y-option-row">
+              <div>
+                <h4>ADA Height Adjustment</h4>
+                <p>Lower interactive controls for comfortable wheelchair access.</p>
+              </div>
+              <button id="btn-toggle-wheelchair" class="a11y-toggle-btn">Lower UI Reach</button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="modal-done-btn" data-close="modal-accessibility">Done</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Modal -->
+      <div id="modal-help" class="kiosk-modal-backdrop">
+        <div class="kiosk-modal-card">
+          <div class="modal-header">
+            <div class="title-wrap">
+              <span class="modal-icon">❓</span>
+              <h3>Ka Lama Kiosk Help &amp; Assistance</h3>
+            </div>
+            <button class="modal-close-btn" data-close="modal-help">✕</button>
+          </div>
+          <div class="modal-body help-body">
+            <div class="help-item">
+              <span class="help-bullet">👆</span>
+              <div>
+                <h4>Touch Navigation</h4>
+                <p>Tap any card, directory room, or category chip. Use the bottom navigation bar at any time to return to the <strong>Main Menu</strong> or <strong>Exit</strong> to the attract screen.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <span class="help-bullet">📱</span>
+              <div>
+                <h4>Mobile QR Codes</h4>
+                <p>Point your smartphone camera at any on-screen QR code to save job postings, RSVP for events, or contact faculty advisors directly.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <span class="help-bullet">🏫</span>
+              <div>
+                <h4>Need In-Person Assistance?</h4>
+                <p>Visit the <strong>Business Department Office in Ka Lama 203</strong> (2nd Floor) or call (808) 984-3381 during normal campus hours.</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="modal-done-btn" data-close="modal-help">Close Help</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Virtual Keyboard Modal for Survey "Other" input -->
+      <div id="modal-keyboard" class="kiosk-modal-backdrop">
+        <div class="kiosk-modal-card keyboard-card">
+          <div class="modal-header">
+            <div class="title-wrap">
+              <span class="modal-icon">⌨️</span>
+              <h3>Enter Your Idea</h3>
+            </div>
+            <button class="modal-close-btn" data-close="modal-keyboard">✕</button>
+          </div>
+          <div class="modal-body">
+            <input type="text" id="keyboard-input-display" class="keyboard-input-display" placeholder="Tap keys below..." readonly>
+            <div class="virtual-keyboard" id="onscreen-keyboard">
               <!-- Rendered via JS -->
             </div>
-            <div class="survey-feedback-msg" id="vote-confirmed-msg">
-              Thank you for sharing your voice! Your vote was recorded.
-            </div>
           </div>
-        </div>
-      </section>
-
-      <!-- 6. EVENTS & MARKETING VIEW -->
-      <section id="view-events" class="view-panel">
-        <div class="view-header">
-          <div>
-            <h2>Department Events & Campus Highlights</h2>
-            <p>Stay up to date with workshops, speaker series, and important dates.</p>
-          </div>
-          <button class="btn-back">← Back to Menu</button>
-        </div>
-
-        <div class="events-timeline" id="events-container">
-          <!-- Injected via JS -->
-        </div>
-      </section>
-
-      <!-- 7. UHMC WEB PORTAL / ACCESS VIEW -->
-      <section id="view-portal" class="view-panel">
-        <div class="view-header">
-          <div>
-            <h2>UHMC Student Portal & Online Access</h2>
-            <p>Access authorized university resources and mobile services.</p>
-          </div>
-          <button class="btn-back">← Back to Menu</button>
-        </div>
-
-        <div class="portal-grid">
-          <div class="portal-card">
-            <div class="portal-card-header">
-              <h3>MyUH Portal</h3>
-              <span class="badge-safe">Verified</span>
-            </div>
-            <p>Registration, grades, tuition payment, and student accounts.</p>
-            <a href="https://myuh.hawaii.edu" target="_blank" class="portal-link-btn">Launch MyUH Portal ↗</a>
-          </div>
-
-          <div class="portal-card">
-            <div class="portal-card-header">
-              <h3>Laulima (Coursework)</h3>
-              <span class="badge-safe">Verified</span>
-            </div>
-            <p>Online course materials, assignments, tests, and discussion boards.</p>
-            <a href="https://laulima.hawaii.edu" target="_blank" class="portal-link-btn">Open Laulima ↗</a>
-          </div>
-
-          <div class="portal-card">
-            <div class="portal-card-header">
-              <h3>STAR GPS Graduation</h3>
-              <span class="badge-safe">Verified</span>
-            </div>
-            <p>Track academic degree progress, course registration pathways, and advisors.</p>
-            <a href="https://www.star.hawaii.edu" target="_blank" class="portal-link-btn">Launch STAR GPS ↗</a>
-          </div>
-
-          <div class="portal-card">
-            <div class="portal-card-header">
-              <h3>UHMC Official Website</h3>
-              <span class="badge-safe">Verified</span>
-            </div>
-            <p>Campus news, academic calendars, admissions, and campus services.</p>
-            <a href="http://maui.hawaii.edu" target="_blank" class="portal-link-btn">Visit maui.hawaii.edu ↗</a>
-          </div>
-
-          <div class="portal-card">
-            <div class="portal-card-header">
-              <h3>The Learning Center (TLC)</h3>
-              <span class="badge-safe">Verified</span>
-            </div>
-            <p>Free tutoring in math, writing, accounting, and business subjects.</p>
-            <a href="http://maui.hawaii.edu/tlc" target="_blank" class="portal-link-btn">Explore Tutoring ↗</a>
-          </div>
-
-          <div class="portal-card">
-            <div class="portal-card-header">
-              <h3>UHMC Bookstore</h3>
-              <span class="badge-safe">Verified</span>
-            </div>
-            <p>Textbooks, school supplies, UHMC apparel, and tech accessories.</p>
-            <a href="https://www.bookstore.hawaii.edu/maui" target="_blank" class="portal-link-btn">Open Bookstore ↗</a>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- FOOTER STATUS & ACCESSIBILITY -->
-    <footer class="kiosk-footer">
-      <div class="footer-left">
-        <span class="kiosk-tag">KIOSK ID: KL-01 (1st Fl) / KL-02 (2nd Fl)</span>
-        <span class="divider">•</span>
-        <span>Touch anywhere to interact</span>
-      </div>
-      <div class="footer-center">
-        <div class="idle-timer-badge" id="idle-timer-badge">
-          <span>Auto-reset in <strong id="idle-seconds">60</strong>s</span>
-        </div>
-      </div>
-      <div class="footer-right">
-        <button id="btn-fullscreen" class="btn-footer-tool">⛶ Fullscreen</button>
-        <button id="btn-accessibility" class="btn-footer-tool">👁 High Contrast</button>
-      </div>
-    </footer>
-
-    <!-- ATTRACT MODE / SCREENSAVER (Idle Screen) -->
-    <div id="attract-screensaver" class="screensaver-overlay">
-      <div class="screensaver-backdrop"></div>
-      <div class="screensaver-content">
-        <div class="screensaver-badge">University of Hawaiʻi Maui College</div>
-        <h1 class="screensaver-headline">Shape Your Future in Business & Technology</h1>
-        <p class="screensaver-subline">Ka Lama Building • Business, Hospitality, Accounting & ABIT</p>
-
-        <div class="screensaver-reel" id="screensaver-reel">
-          <div class="reel-slide active">
-            <span class="reel-tag">Featured Program</span>
-            <h3>ABIT Degree: Applied Business & Information Tech</h3>
-            <p>Combining entrepreneurial business skills with cutting-edge software and cybersecurity.</p>
-          </div>
-          <div class="reel-slide">
-            <span class="reel-tag">Career Spotlight</span>
-            <h3>Maui Hospitality & Tourism Leadership</h3>
-            <p>Internships and managerial pathways with premier island resorts and local businesses.</p>
-          </div>
-          <div class="reel-slide">
-            <span class="reel-tag">Campus News</span>
-            <h3>Need Help Finding Your Class or Professor?</h3>
-            <p>Tap the screen to open the Ka Lama 1st & 2nd floor interactive building directory.</p>
-          </div>
-        </div>
-
-        <div class="touch-to-start">
-          <div class="pulse-ring"></div>
-          <div class="touch-btn-inner">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-            <span>Touch Screen to Start</span>
+          <div class="modal-footer">
+            <button id="btn-keyboard-submit" class="modal-done-btn">Submit Idea</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+
+    </div> <!-- /kiosk-app -->
+  </div> <!-- /kiosk-viewport -->
 
   <script src="app.js"></script>
 </body>
