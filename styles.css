@@ -890,12 +890,14 @@ body.kiosk-full-mode #kiosk-app {
 
 .menu-tile {
   min-height: 132px;
+  background: linear-gradient(145deg, #004f6e 0%, #002530 100%);
   position: relative;
   background-color: var(--uhmc-primary-dark);
   background-size: cover;
   background-position: center;
   border: 1.5px solid var(--surface-border);
   border-radius: var(--radius-lg);
+  padding: 14px;
   padding: 16px 14px;
   display: flex;
   flex-direction: column;
@@ -907,6 +909,26 @@ body.kiosk-full-mode #kiosk-app {
   overflow: hidden;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   isolation: isolate;
+}
+
+.menu-tile:nth-child(2) {
+  background: linear-gradient(145deg, #093758 0%, #031c2e 100%);
+}
+
+.menu-tile:nth-child(3) {
+  background: linear-gradient(145deg, #5c2c16 0%, #2f1508 100%);
+}
+
+.menu-tile:nth-child(4) {
+  background: linear-gradient(145deg, #2b3a42 0%, #151e23 100%);
+}
+
+.menu-tile:nth-child(5) {
+  background: linear-gradient(145deg, #004f6e 0%, #00313c 100%);
+}
+
+.menu-tile:nth-child(6) {
+  background: linear-gradient(145deg, #245b59 0%, #123436 100%);
 }
 
 /* Photo backgrounds for each of the 6 tiles using unused photos */
@@ -934,7 +956,7 @@ body.kiosk-full-mode #kiosk-app {
   background-image: url('assets/images/unused/Screenshot 2026-11-12 092045.png');
 }
 
-/* Brand blue tint overlay so tile text and icons remain readable while photos show through clearly */
+/* Brand blue tint overlay so tile text and photos look balanced */
 .menu-tile::before {
   content: '';
   position: absolute;
@@ -956,20 +978,21 @@ body.kiosk-full-mode #kiosk-app {
 
 .menu-tile:active {
   transform: scale(0.97);
+  background: var(--surface-card-active);
   border-color: var(--uh-gold-light);
-}
-
-.menu-tile>* {
-  position: relative;
-  z-index: 2;
 }
 
 .tile-icon-circle {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgba(0, 79, 110, 0.45);
+  background: rgba(0, 79, 110, 0.12);
   border: 1.5px solid var(--surface-border-gold);
+
+  .menu-tile>* {
+    position: relative;
+    z-index: 2;
+  }
 
   .tile-text {
     width: 100%;
@@ -977,23 +1000,27 @@ body.kiosk-full-mode #kiosk-app {
     align-items: center;
     justify-content: center;
     color: var(--uh-gold-light);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
   }
 
   .tile-text h3 {
     font-family: 'Outfit', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
-    letter-spacing: -0.2px;
     font-size: 19px;
     font-weight: 800;
     letter-spacing: -0.3px;
     color: #ffffff;
+    margin-bottom: 2px;
     margin-bottom: 0;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
     padding: 8px 12px;
+  }
+
+  .tile-text p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.3;
   }
 
   /* ==========================================================================
